@@ -8,7 +8,7 @@ export default async (req, res) => {
   const session = await getSession({ req })
 
 	if (session) {
-		const surv = await require("util/app_surveys.json")
+		const surv = process.env.SURVEY_OBJ
 		if (surv) {
 			res.send({ data: surv, status: 200 })
 		}
