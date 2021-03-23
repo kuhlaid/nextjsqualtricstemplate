@@ -3,8 +3,8 @@ import Layout from 'components/layout'
 // using this to test the MongoDb caching which seems to be working
 import { connectToDatabase } from 'util/mongodb'
 
-export default function Page ({isConnected}) {
-  //const store = useStore()
+export default function Page ({isConnected,envVars}) {
+  const var1 = JSON.parse(envVars.strSu)
   return (
     <Layout>
       <h1>Client Side Rendering</h1>
@@ -17,7 +17,7 @@ export default function Page ({isConnected}) {
           </h2>
         )}
       <p>
-        This page uses the <strong>useSession()</strong> React Hook in the <strong>&lt;Header/&gt;</strong> component.
+        This page uses the <strong>useSession()</strong> React Hook in the <strong>&lt;Header/&gt;</strong> component.- {var1.IncludeSurveys[1]}
       </p>
       <p>
         The <strong>useSession()</strong> React Hook easy to use and allows pages to render very quickly.
@@ -35,10 +35,10 @@ export default function Page ({isConnected}) {
 
 export async function getServerSideProps(context) {
   const { client } = await connectToDatabase()
-
+  const envVars = { strSu: process.env.SURVEY_OBJ }
   const isConnected = await client.isConnected()
 
   return {
-    props: { isConnected },
+    props: { isConnected, envVars },
   }
 }
